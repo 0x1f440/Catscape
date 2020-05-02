@@ -43,15 +43,19 @@ public class CollectionManager : MonoBehaviour
     private void UpdateCatData()
     {
         int count = 0;
+
         while (count < CATS_PER_PAGE)
         {
 
             var catImg = slot.transform.GetChild(count).Find("Image").GetComponent<Image>();
             var catName = slot.transform.GetChild(count).Find("Name").GetComponent<Text>();
+            var lockImg = slot.transform.GetChild(count).Find("LockImage").gameObject;
+
             int catNumber = index * CATS_PER_PAGE + count;
 
             catImg.color = new Color(1, 1, 1);
-                
+            lockImg.SetActive(false);
+
             if (catNumber < CatSelector.normalCount)
             {
                 catImg.sprite = Resources.Load<Sprite>("Cats/Common/" + catNumber.ToString());
@@ -89,6 +93,7 @@ public class CollectionManager : MonoBehaviour
                     else
                     {
                         catName.text = catData.unlockCondition;
+                        lockImg.SetActive(true);
                     }
                 }
             }
@@ -114,6 +119,7 @@ public class CollectionManager : MonoBehaviour
                     else
                     {
                         catName.text = catData.unlockCondition;
+                        lockImg.SetActive(true);
                     }
                 }
             }
