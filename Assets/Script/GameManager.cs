@@ -22,7 +22,8 @@ public class GameManager : MonoBehaviour
     public GameObject clearScene;
 
     GameObject upperUI;
-    Text stageUI, moveUI;
+    Text stageUI, moveUI, MeowneyUI;
+    public Text addMeowneyUI;
     public static bool isRestart;
 
     public delegate void GameEndHandler();
@@ -34,6 +35,8 @@ public class GameManager : MonoBehaviour
         upperUI = GameObject.FindGameObjectWithTag("UpperUI");
         stageUI = upperUI.transform.Find("Stage/Content Text").GetComponent<Text>();
         moveUI = upperUI.transform.Find("Moves/Content Text").GetComponent<Text>();
+        MeowneyUI = upperUI.transform.Find("Meowney/Content Text").GetComponent<Text>();
+     
         StartGame();
     }
     void Update()
@@ -65,27 +68,55 @@ public class GameManager : MonoBehaviour
     {
         clearScene.SetActive(true);
         GameEndEventHandler();
+        GetMeowney();
         switch (CatSelector.catCategory)
         {
             case "Common":
-                DataManager.Instance.rescuedCommonCats.Add(CatSelector.catNumber);
+                if (!DataManager.Instance.rescuedCommonCats.Contains(CatSelector.catNumber))
+                {
+                    DataManager.Instance.rescuedCommonCats.Add(CatSelector.catNumber);
+                }
                 break;
 
             case "Rare":
-                DataManager.Instance.rescuedRareCats.Add(CatSelector.catNumber);
+                if (!DataManager.Instance.rescuedRareCats.Contains(CatSelector.catNumber))
+                {
+                    DataManager.Instance.rescuedRareCats.Add(CatSelector.catNumber);
+                }
+
+                if (!DataManager.Instance.unlockedRareCats.Contains(CatSelector.catNumber))
+                {
+                    DataManager.Instance.unlockedRareCats.Add(CatSelector.catNumber);
+                }
                 break;
 
             case "Special":
-                DataManager.Instance.rescuedSpecialCats.Add(CatSelector.catNumber);
+                if (!DataManager.Instance.rescuedSpecialCats.Contains(CatSelector.catNumber))
+                {
+                    DataManager.Instance.rescuedSpecialCats.Add(CatSelector.catNumber);
+                }
+
+                if (!DataManager.Instance.unlockedSpecialCats.Contains(CatSelector.catNumber))
+                {
+                    DataManager.Instance.unlockedSpecialCats.Add(CatSelector.catNumber);
+                }
                 break;
         }
         DataManager.Save();
+    }
+
+    private void GetMeowney()
+    {
+        int meowney = (stage / 10) + 1;
+        DataManager.Instance.meowney += meowney;
+        addMeowneyUI.text = "+" + meowney.ToString();
     }
 
     private void UpdateUI()
     {
         stageUI.text = (stage + 1).ToString();
         moveUI.text = move.ToString();
+        MeowneyUI.text = DataManager.Instance.meowney.ToString();
     }
 
     public void StartNextLevel()

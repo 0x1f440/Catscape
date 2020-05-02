@@ -86,7 +86,7 @@ public class CollectionManager : MonoBehaviour
                 else
                 {
                     catImg.color = new Color(0, 0, 0);
-                    if (DataManager.Instance.openedRareCats.Contains(catNumber))
+                    if (DataManager.Instance.unlockedRareCats.Contains(catNumber))
                     {
                         catName.text = "???";
                     }
@@ -112,7 +112,7 @@ public class CollectionManager : MonoBehaviour
                 else
                 {
                     catImg.color = new Color(0, 0, 0);
-                    if (DataManager.Instance.openedSpecialCats.Contains(catNumber))
+                    if (DataManager.Instance.unlockedSpecialCats.Contains(catNumber))
                     {
                         catName.text = "???";
                     }

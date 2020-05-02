@@ -33,8 +33,8 @@ public class DataManager
     public List<int> rescuedRareCats;
     public List<int> rescuedSpecialCats;
 
-    public List<int> openedRareCats;
-    public List<int> openedSpecialCats;
+    public List<int> unlockedRareCats;
+    public List<int> unlockedSpecialCats;
     
 
     private void Create()
@@ -46,8 +46,8 @@ public class DataManager
         instance.rescuedRareCats = new List<int> { };
         instance.rescuedSpecialCats = new List<int> { };
 
-        instance.openedRareCats = new List<int> { };
-        instance.openedSpecialCats = new List<int> { };
+        instance.unlockedRareCats = new List<int> { };
+        instance.unlockedSpecialCats = new List<int> { };
     }
 
     public static void Save()
