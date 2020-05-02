@@ -16,12 +16,48 @@ public class CatSelector : MonoBehaviour
         if (GameManager.isRestart)
         {
             GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Cats/" + catCategory + "/" + catNumber.ToString());
+            return;
         }
-        else if(GameManager.stage < 20)
+        
+        if (GameManager.stage < 20)
         {
-            catCategory = "Common";
-            catNumber = Random.Range(0, normalCount);
-            GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Cats/" + catCategory + "/" + catNumber.ToString());
-        }   
+            LoadCommonCat();
+            return;
+        }
+
+        int dice = Random.Range(0, 100);
+        if (dice < 50)
+        {
+            LoadCommonCat();
+        }
+        else if (dice < 80)
+        {
+            LoadRareCat();
+        }
+        else
+        {
+            LoadSpecialCat();
+        }
+    }
+
+    void LoadCommonCat()
+    {
+        catCategory = "Common";
+        catNumber = Random.Range(0, normalCount);
+        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Cats/Common/" + catNumber.ToString());
+    }
+
+    void LoadRareCat()
+    {
+        catCategory = "Rare";
+        catNumber = Random.Range(0, rareCount);
+        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Cats/Rare/" + catNumber.ToString());
+    }
+
+    void LoadSpecialCat()
+    {
+        catCategory = "Special";
+        catNumber = Random.Range(0, specialCount);
+        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Cats/Special/" + catNumber.ToString());
     }
 }
