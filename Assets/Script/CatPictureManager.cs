@@ -7,7 +7,11 @@ public class CatPictureManager : MonoBehaviour
 {
     private void OnEnable()
     {
+        var jsonData = Resources.Load<TextAsset>("Cats/"+ CatSelector.catCategory+ "/" + CatSelector.catNumber.ToString());
+        var catData = JsonUtility.FromJson<CatData>(jsonData.text);
+
         transform.Find("Photo/Cat").GetComponent<Image>().sprite = Resources.Load<Sprite>("Cats/" + CatSelector.catCategory + "/" + CatSelector.catNumber.ToString());
+        transform.Find("Text").GetComponent<Text>().text = catData.name;
 
         var newRibbon = transform.Find("NewRibbon").gameObject;
         switch (CatSelector.catCategory)
