@@ -27,6 +27,7 @@ public class DataManager
     }
 
     public int stage;
+    public int meowney;
 
     public List<int> rescuedCommonCats;
     public List<int> rescuedRareCats;
@@ -39,6 +40,7 @@ public class DataManager
     private void Create()
     {
         instance.stage = 0;
+        instance.meowney = 0;
 
         instance.rescuedCommonCats = new List<int> { };
         instance.rescuedRareCats = new List<int> { };
