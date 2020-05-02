@@ -6,6 +6,8 @@ public class GoogleMobileAdsObject : MonoBehaviour
 {
 	private BannerView bannerView;
 	private InterstitialAd interstitial;
+	private RewardedAd rewardedAd;
+
 	public void Start()
 	{
 		// https://developers.google.com/admob/unity/banner?hl=ko
@@ -14,6 +16,7 @@ public class GoogleMobileAdsObject : MonoBehaviour
 		MobileAds.Initialize(appId);
 		RequestBanner();
 		RequestInterstitial();
+		RequestRewardedAd();
 	}
 
 	private void RequestBanner()
@@ -43,9 +46,38 @@ public class GoogleMobileAdsObject : MonoBehaviour
 		this.interstitial.LoadAd(request);
 	}
 
+	public void RequestRewardedAd()
+	{
+		string adUnitId = "ca-app-pub-3940256099942544/5224354917";
+		this.rewardedAd = new RewardedAd(adUnitId);
+
+		AdRequest request = new AdRequest.Builder().Build();
+
+		// Load the rewarded ad with the request.
+		this.rewardedAd.LoadAd(request);
+	}
+
 	public void ShowInterstitial()
 	{
-		this.interstitial.Show();
+		interstitial.Show();
 		RequestInterstitial();
 	}
+
+	private void ShowRewardedAd()
+	{
+		rewardedAd.Show();
+		RequestRewardedAd();
+	}
+
+	internal void ShowRewardedAdForMeowney()
+	{
+		rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
+		ShowRewardedAd();
+	}
+
+	public void HandleUserEarnedReward(object sender, EventArgs args)
+	{
+		GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().GetRewardMeowney();
+	}
+
 }

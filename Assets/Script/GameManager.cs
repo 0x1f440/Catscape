@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
     }
     internal void FinishGame()
     {
+        clearScene.transform.Find("panel/AdForMeowney").gameObject.SetActive(true);
         clearScene.SetActive(true);
         GameEndEventHandler();
         GetMeowney();
@@ -105,6 +106,24 @@ public class GameManager : MonoBehaviour
         DataManager.Save();
     }
 
+    internal void GetRewardMeowney()
+    {
+        clearScene.transform.Find("panel/AdForMeowney").gameObject.SetActive(false);
+        int meowney = (stage / 10) + 1;
+        DataManager.Instance.meowney += meowney * 3;
+        StartCoroutine(CountUpMeowney(meowney));
+    }
+
+    IEnumerator CountUpMeowney(int meowney)
+    {
+        int goal = meowney * 4;
+        while (meowney <= goal)
+        {
+            addMeowneyUI.GetComponent<AudioSource>().Play();
+            addMeowneyUI.text = "+" + (meowney++).ToString();
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
     private void GetMeowney()
     {
         int meowney = (stage / 10) + 1;
@@ -139,6 +158,11 @@ public class GameManager : MonoBehaviour
         GameObject.FindGameObjectWithTag("AdManager").GetComponent<GoogleMobileAdsObject>().ShowInterstitial();
         GameEndEventHandler();
         StartNextLevel();
+    }
+
+    public void ShowRewardedAdForMeowney()
+    {
+        GameObject.FindGameObjectWithTag("AdManager").GetComponent<GoogleMobileAdsObject>().ShowRewardedAdForMeowney();
     }
 
     public void TwitterShare()
