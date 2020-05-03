@@ -31,6 +31,9 @@ public class Blocks : MonoBehaviour
 
 	void OnMouseDrag()
 	{
+		if (GameManager.isCollectionOpen)
+			return;
+
 		Vector3 newPos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
 		rb2d.isKinematic = false;
 
@@ -50,6 +53,9 @@ public class Blocks : MonoBehaviour
 
 	void OnMouseUp()
 	{
+		if (GameManager.isCollectionOpen)
+			return;
+
 		rb2d.isKinematic = true;
 		GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().AddMove();
 		GetComponent<AudioSource>().Play();

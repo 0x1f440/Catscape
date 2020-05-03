@@ -14,9 +14,15 @@ public class CollectionManager : MonoBehaviour
 
     void OnEnable()
     {
+        GameManager.isCollectionOpen = true;
         UpdatePercentUI();
         UpdateCatData();
         UpdateIndexUI();
+    }
+
+    private void OnDisable()
+    {
+        GameManager.isCollectionOpen = false;
     }
 
     private void UpdatePercentUI()
@@ -46,27 +52,33 @@ public class CollectionManager : MonoBehaviour
 
         while (count < CATS_PER_PAGE)
         {
-
-            var catImg = slot.transform.GetChild(count).Find("Image").GetComponent<Image>();
+            var info = slot.transform.GetChild(count).GetComponent<CollectionInfoContainer>();
+            var catImg = slot.transform.GetChild(count).Find("ColCatImg").GetComponent<Image>();
             var catName = slot.transform.GetChild(count).Find("Name").GetComponent<Text>();
             var lockImg = slot.transform.GetChild(count).Find("LockImage").gameObject;
 
             int catNumber = index * CATS_PER_PAGE + count;
 
+            TextAsset jsonData = null;
+            CatData catData = null;
+
             catImg.color = new Color(1, 1, 1);
             lockImg.SetActive(false);
 
+            info.hasCat = true;
+            info.isLocked = false;
             if (catNumber < CatSelector.normalCount)
             {
                 catImg.sprite = Resources.Load<Sprite>("Cats/Common/" + catNumber.ToString());
                 if (DataManager.Instance.rescuedCommonCats.Contains(catNumber))
                 {
-                    var jsonData = Resources.Load<TextAsset>("Cats/Common/" + catNumber.ToString());
-                    var catData = JsonUtility.FromJson<CatData>(jsonData.text);
+                    jsonData = Resources.Load<TextAsset>("Cats/Common/" + catNumber.ToString());
+                    catData = JsonUtility.FromJson<CatData>(jsonData.text);
                     catName.text = catData.name;
                 }
                 else
                 {
+                    info.hasCat = false;
                     catImg.color = new Color(0, 0, 0);
                     catName.text = "???";
                 }
@@ -76,15 +88,16 @@ public class CollectionManager : MonoBehaviour
                 catNumber -= CatSelector.normalCount;
                 catImg.sprite = Resources.Load<Sprite>("Cats/Rare/" + catNumber.ToString());
 
-                var jsonData = Resources.Load<TextAsset>("Cats/Rare/" + catNumber.ToString());
-                var catData = JsonUtility.FromJson<CatData>(jsonData.text);
-                
+                jsonData = Resources.Load<TextAsset>("Cats/Rare/" + catNumber.ToString());
+                catData = JsonUtility.FromJson<CatData>(jsonData.text);
+
                 if (DataManager.Instance.rescuedRareCats.Contains(catNumber))
                 {
                     catName.text = catData.name;
                 }
                 else
                 {
+                    info.hasCat = false;
                     catImg.color = new Color(0, 0, 0);
                     if (DataManager.Instance.unlockedRareCats.Contains(catNumber))
                     {
@@ -92,6 +105,7 @@ public class CollectionManager : MonoBehaviour
                     }
                     else
                     {
+                        info.isLocked = true;
                         catName.text = catData.unlockCondition;
                         lockImg.SetActive(true);
                     }
@@ -102,8 +116,8 @@ public class CollectionManager : MonoBehaviour
                 catNumber -= CatSelector.normalCount + CatSelector.rareCount;
                 catImg.sprite = Resources.Load<Sprite>("Cats/Special/" + catNumber.ToString());
 
-                var jsonData = Resources.Load<TextAsset>("Cats/Special/" + catNumber.ToString());
-                var catData = JsonUtility.FromJson<CatData>(jsonData.text);
+                jsonData = Resources.Load<TextAsset>("Cats/Special/" + catNumber.ToString());
+                catData = JsonUtility.FromJson<CatData>(jsonData.text);
                 
                 if (DataManager.Instance.rescuedSpecialCats.Contains(catNumber))
                 {
@@ -111,6 +125,7 @@ public class CollectionManager : MonoBehaviour
                 }
                 else
                 {
+                    info.hasCat = false;
                     catImg.color = new Color(0, 0, 0);
                     if (DataManager.Instance.unlockedSpecialCats.Contains(catNumber))
                     {
@@ -118,6 +133,7 @@ public class CollectionManager : MonoBehaviour
                     }
                     else
                     {
+                        info.isLocked = true;
                         catName.text = catData.unlockCondition;
                         lockImg.SetActive(true);
                     }
@@ -125,9 +141,25 @@ public class CollectionManager : MonoBehaviour
             }
             else
             {
+                info.hasCat = false;
                 catImg.sprite = null;
                 catName.text = "";
             }
+
+            info.catName = catName.text;
+            info.catImg = catImg.sprite;
+
+            if (catData != null)
+            {
+                info.catDesc = catData.description;
+                info.catUnlockCondition = catData.unlockCondition;
+            }
+            else
+            {
+                info.catDesc = "";
+                info.catUnlockCondition = "";
+            }
+  
             count++;
         }
     }

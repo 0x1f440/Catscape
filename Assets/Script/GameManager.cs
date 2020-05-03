@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     private const string TWITTER_ADDRESS = "http://twitter.com/intent/tweet";
     private string appStoreLink = "http://www.YOUROWNAPPLINK.com";
 
+    public static bool isCollectionOpen = false;
     public static int stage {
         get { 
             return DataManager.Instance.stage; 
