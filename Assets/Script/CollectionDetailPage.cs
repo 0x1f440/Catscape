@@ -5,14 +5,19 @@ using UnityEngine.UI;
 
 public class CollectionDetailPage : MonoBehaviour
 {
+    public static int selectedCatNumber;
+    public static string selectedCatCategory;
+
     GameObject detailPage;
     Text catNameUI;
     Text catDescriptionUI;
     Image catImgUI;
     public GameObject collectionBg;
 
-    public bool isLocked;
-    public bool isRescued;
+    public static bool isLocked;
+    public static bool isRescued;
+
+    public static bool isEquipped;
     
     // Start is called before the first frame update
     void FetchVariables()
@@ -22,21 +27,12 @@ public class CollectionDetailPage : MonoBehaviour
         catDescriptionUI = detailPage.transform.Find("Desc").GetComponent<Text>();
         catImgUI = detailPage.transform.Find("Picture").GetComponent<Image>();
     }
-
-    private void OnEnable()
-    {
-        collectionBg.SetActive(false);
-
-    }
-
-    private void OnDisable()
-    {
-        collectionBg.SetActive(true);
-    }
-    public void OpenDetailPage(string catName, string catDesc, Sprite catImg)
+    public void OpenDetailPage(string catName, string catDesc, Sprite catImg, bool isEquipedBool)
     {
         if (catNameUI == null)
             FetchVariables();
+
+        isEquipped = isEquipedBool;
 
         catNameUI.text = catName;
         catDescriptionUI.text = catDesc;
@@ -49,6 +45,8 @@ public class CollectionDetailPage : MonoBehaviour
     {
         if (catNameUI == null)
             FetchVariables();
+
+        isEquipped = false;
 
         catNameUI.text = "???";
         catImgUI.sprite = catImg;
@@ -63,6 +61,8 @@ public class CollectionDetailPage : MonoBehaviour
     {
         if (catNameUI == null)
             FetchVariables();
+
+        isEquipped = false;
 
         catNameUI.text = "???";
         catImgUI.sprite = catImg;

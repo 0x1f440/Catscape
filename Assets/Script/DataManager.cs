@@ -35,6 +35,9 @@ public class DataManager
 
     public List<int> unlockedRareCats;
     public List<int> unlockedSpecialCats;
+
+    public string equipCategory;
+    public int equipNumber;
     
 
     private void Create()
@@ -42,12 +45,15 @@ public class DataManager
         instance.stage = 0;
         instance.meowney = 0;
 
-        instance.rescuedCommonCats = new List<int> { };
+        instance.rescuedCommonCats = new List<int> { 0 };
         instance.rescuedRareCats = new List<int> { };
         instance.rescuedSpecialCats = new List<int> { };
 
         instance.unlockedRareCats = new List<int> { };
         instance.unlockedSpecialCats = new List<int> { };
+
+        instance.equipCategory = "Common";
+        instance.equipNumber = 0;
     }
 
     public static void Save()

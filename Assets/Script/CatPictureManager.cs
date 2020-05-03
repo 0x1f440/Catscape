@@ -1,52 +1,46 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CatPictureManager : MonoBehaviour
 {
+    public static bool showRibbon;
     private void OnEnable()
     {
-        var jsonData = Resources.Load<TextAsset>("Cats/"+ CatSelector.catCategory+ "/" + CatSelector.catNumber.ToString());
-        var catData = JsonUtility.FromJson<CatData>(jsonData.text);
+        CheckRibbon();
 
-        transform.Find("Photo/Cat").GetComponent<Image>().sprite = Resources.Load<Sprite>("Cats/" + CatSelector.catCategory + "/" + CatSelector.catNumber.ToString());
-        transform.Find("Text").GetComponent<Text>().text = catData.name;
-
-        var newRibbon = transform.Find("NewRibbon").gameObject;
-        switch (CatSelector.catCategory)
+        if (CatSelector.isRandom)
         {
-            case "Common":
-                if (DataManager.Instance.rescuedCommonCats.Contains(CatSelector.catNumber))
-                {
-                    newRibbon.SetActive(false);
-                }
-                else
-                {
-                    newRibbon.SetActive(true);
-                }
-                break;
-            case "Rare":
-                if (DataManager.Instance.rescuedRareCats.Contains(CatSelector.catNumber))
-                {
-                    newRibbon.SetActive(false);
-                }
-                else
-                {
-                    newRibbon.SetActive(true);
-                }
-                break;
-            case "Special":
-                if (DataManager.Instance.rescuedSpecialCats.Contains(CatSelector.catNumber))
-                {
-                    newRibbon.SetActive(false);
-                }
-                else
-                {
-                    newRibbon.SetActive(true);
-                }
-                break;
-        }
+            string path = "Cats/" + CatSelector.rescuedCatCategory + "/" + CatSelector.rescuedCatNumber.ToString();
+            var jsonData = Resources.Load<TextAsset>(path);
+            var catData = JsonUtility.FromJson<CatData>(jsonData.text);
 
+            transform.Find("Photo/Cat").GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
+            transform.Find("Text").GetComponent<Text>().text = catData.name;
+        }
+        else
+        {
+            string path = "Cats/" + DataManager.Instance.equipCategory + "/" + DataManager.Instance.equipNumber.ToString();
+            var jsonData = Resources.Load<TextAsset>(path);
+            var catData = JsonUtility.FromJson<CatData>(jsonData.text);
+
+            transform.Find("Photo/Cat").GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
+            transform.Find("Text").GetComponent<Text>().text = catData.name;
+        }
+    }
+
+    private void CheckRibbon()
+    {
+        var newRibbon = transform.Find("NewRibbon").gameObject;
+        if (showRibbon)
+        {
+            newRibbon.SetActive(true);
+        }
+        else
+        {
+            newRibbon.SetActive(false);
+        }
     }
 }

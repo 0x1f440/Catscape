@@ -69,6 +69,9 @@ public class CollectionManager : MonoBehaviour
             info.isLocked = false;
             if (catNumber < CatSelector.normalCount)
             {
+                info.catNumber = catNumber;
+                info.catCategory = "Common";
+                
                 catImg.sprite = Resources.Load<Sprite>("Cats/Common/" + catNumber.ToString());
                 if (DataManager.Instance.rescuedCommonCats.Contains(catNumber))
                 {
@@ -85,6 +88,9 @@ public class CollectionManager : MonoBehaviour
             }
             else if (catNumber < CatSelector.normalCount + CatSelector.rareCount)
             {
+                info.catNumber = catNumber;
+                info.catCategory = "Rare";
+
                 catNumber -= CatSelector.normalCount;
                 catImg.sprite = Resources.Load<Sprite>("Cats/Rare/" + catNumber.ToString());
 
@@ -113,6 +119,9 @@ public class CollectionManager : MonoBehaviour
             }
             else if (catNumber < CatSelector.normalCount + CatSelector.rareCount + CatSelector.specialCount)
             {
+                info.catNumber = catNumber;
+                info.catCategory = "Special";
+
                 catNumber -= CatSelector.normalCount + CatSelector.rareCount;
                 catImg.sprite = Resources.Load<Sprite>("Cats/Special/" + catNumber.ToString());
 

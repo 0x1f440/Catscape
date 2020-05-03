@@ -67,44 +67,53 @@ public class GameManager : MonoBehaviour
     }
     internal void FinishGame()
     {
+        CatPictureManager.showRibbon = false;
+        if (CatSelector.isRandom)
+        {
+            CatSelector.GetRandomCat();
+            switch (CatSelector.rescuedCatCategory)
+            {
+                case "Common":
+                    if (!DataManager.Instance.rescuedCommonCats.Contains(CatSelector.rescuedCatNumber))
+                    {
+                        CatPictureManager.showRibbon = true;
+                        DataManager.Instance.rescuedCommonCats.Add(CatSelector.rescuedCatNumber);
+                    }
+                    break;
+
+                case "Rare":
+                    if (!DataManager.Instance.rescuedRareCats.Contains(CatSelector.rescuedCatNumber))
+                    {
+                        CatPictureManager.showRibbon = true;
+                        DataManager.Instance.rescuedRareCats.Add(CatSelector.rescuedCatNumber);
+                    }
+
+                    if (!DataManager.Instance.unlockedRareCats.Contains(CatSelector.rescuedCatNumber))
+                    {
+                        DataManager.Instance.unlockedRareCats.Add(CatSelector.rescuedCatNumber);
+                    }
+                    break;
+
+                case "Special":
+                    if (!DataManager.Instance.rescuedSpecialCats.Contains(CatSelector.rescuedCatNumber))
+                    {
+                        CatPictureManager.showRibbon = true;
+                        DataManager.Instance.rescuedSpecialCats.Add(CatSelector.rescuedCatNumber);
+                    }
+
+                    if (!DataManager.Instance.unlockedSpecialCats.Contains(CatSelector.rescuedCatNumber))
+                    {
+                        DataManager.Instance.unlockedSpecialCats.Add(CatSelector.rescuedCatNumber);
+                    }
+                    break;
+            }
+            DataManager.Save();
+        }
+        
         clearScene.transform.Find("panel/AdForMeowney").gameObject.SetActive(true);
         clearScene.SetActive(true);
         GameEndEventHandler();
         GetMeowney();
-        switch (CatSelector.catCategory)
-        {
-            case "Common":
-                if (!DataManager.Instance.rescuedCommonCats.Contains(CatSelector.catNumber))
-                {
-                    DataManager.Instance.rescuedCommonCats.Add(CatSelector.catNumber);
-                }
-                break;
-
-            case "Rare":
-                if (!DataManager.Instance.rescuedRareCats.Contains(CatSelector.catNumber))
-                {
-                    DataManager.Instance.rescuedRareCats.Add(CatSelector.catNumber);
-                }
-
-                if (!DataManager.Instance.unlockedRareCats.Contains(CatSelector.catNumber))
-                {
-                    DataManager.Instance.unlockedRareCats.Add(CatSelector.catNumber);
-                }
-                break;
-
-            case "Special":
-                if (!DataManager.Instance.rescuedSpecialCats.Contains(CatSelector.catNumber))
-                {
-                    DataManager.Instance.rescuedSpecialCats.Add(CatSelector.catNumber);
-                }
-
-                if (!DataManager.Instance.unlockedSpecialCats.Contains(CatSelector.catNumber))
-                {
-                    DataManager.Instance.unlockedSpecialCats.Add(CatSelector.catNumber);
-                }
-                break;
-        }
-        DataManager.Save();
     }
 
     internal void GetRewardMeowney()
@@ -173,4 +182,5 @@ public class GameManager : MonoBehaviour
            "?text=" + WWW.EscapeURL(descriptionParam + "\n" + "Get the Game:\n" + appStoreLink));
 
     }
+
 }

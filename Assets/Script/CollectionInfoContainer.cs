@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CollectionInfoContainer : MonoBehaviour
 {
+    public string catCategory;
+    public int catNumber;
+
     public string catName;
     public string catDesc;
     public Sprite catImg;
@@ -18,10 +21,15 @@ public class CollectionInfoContainer : MonoBehaviour
     {
         if (hasCat)
         {
-            DetailPage.GetComponent<CollectionDetailPage>().OpenDetailPage(catName, catDesc, catImg);
+            bool isEquiped = DataManager.Instance.equipCategory == catCategory && DataManager.Instance.equipNumber == catNumber;
+            DetailPage.GetComponent<CollectionDetailPage>().OpenDetailPage(catName, catDesc, catImg, isEquiped);
+            CollectionDetailPage.selectedCatCategory = catCategory;
+            CollectionDetailPage.selectedCatNumber = catNumber;
+            CollectionDetailPage.isRescued = true;
         }
         else
         {
+            CollectionDetailPage.isRescued = false;
             if (isLocked)
             {
                 DetailPage.GetComponent<CollectionDetailPage>().OpenDetailPage(catUnlockCondition, catImg);
