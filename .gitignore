@@ -12,6 +12,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+GoogleMobileAdsObject.cs
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
