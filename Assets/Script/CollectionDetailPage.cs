@@ -77,13 +77,4 @@ public class CollectionDetailPage : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
-
-    public void EquipCatSkin()
-    {
-
-    }
-    public void UnequipCatSkin()
-    {
-
-    }
 }

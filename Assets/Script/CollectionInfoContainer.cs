@@ -22,10 +22,11 @@ public class CollectionInfoContainer : MonoBehaviour
         if (hasCat)
         {
             bool isEquiped = DataManager.Instance.equipCategory == catCategory && DataManager.Instance.equipNumber == catNumber;
-            DetailPage.GetComponent<CollectionDetailPage>().OpenDetailPage(catName, catDesc, catImg, isEquiped);
+            CollectionDetailPage.isRescued = true;
             CollectionDetailPage.selectedCatCategory = catCategory;
             CollectionDetailPage.selectedCatNumber = catNumber;
-            CollectionDetailPage.isRescued = true;
+            
+            DetailPage.GetComponent<CollectionDetailPage>().OpenDetailPage(catName, catDesc, catImg, isEquiped);
         }
         else
         {
