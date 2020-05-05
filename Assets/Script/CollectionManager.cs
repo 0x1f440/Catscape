@@ -54,7 +54,7 @@ public class CollectionManager : MonoBehaviour
         UpdateIndexUI();
     }
 
-    private void UpdateCatData()
+    public void UpdateCatData()
     {
         int count = 0;
 

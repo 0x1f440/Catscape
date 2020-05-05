@@ -30,9 +30,12 @@ public class PurchaseManager : MonoBehaviour
             transform.parent.GetComponent<AudioSource>().Play();
             CollectionDetailPage.isRescued = true;
 
+
             GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().LoseMeowney(CollectionDetailPage.catData.price);
             GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().GetACat(CollectionDetailPage.selectedCatCategory, CollectionDetailPage.selectedCatNumber);
             
+            GameObject.FindGameObjectWithTag("Collection").GetComponent<CollectionManager>().UpdateCatData();
+
             transform.parent.Find("Picture").GetComponent<Image>().color = new Color(1, 1, 1);
             transform.parent.Find("Name").GetComponent<Text>().text = CollectionDetailPage.catData.name;
             transform.parent.Find("Desc").GetComponent<Text>().text = CollectionDetailPage.catData.description;
