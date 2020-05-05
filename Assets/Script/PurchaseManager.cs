@@ -24,8 +24,10 @@ public class PurchaseManager : MonoBehaviour
 
     public void PurchaseACat()
     {
-        if(CollectionDetailPage.catData.price <= DataManager.Instance.meowney)
+        if(CollectionDetailPage.catData.price <= DataManager.Instance.meowney && !isBuying)
         {
+            isBuying = true;
+            transform.parent.GetComponent<AudioSource>().Play();
             CollectionDetailPage.isRescued = true;
 
             GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().LoseMeowney(CollectionDetailPage.catData.price);
@@ -38,6 +40,7 @@ public class PurchaseManager : MonoBehaviour
             transform.parent.Find("Equip").GetComponent<EquipCatManager>().BeEqippable();
             transform.parent.Find("Equip").gameObject.SetActive(true);
 
+            isBuying = false;
             gameObject.SetActive(false);
 
         }
