@@ -6,9 +6,6 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    private const string TWITTER_ADDRESS = "http://twitter.com/intent/tweet";
-    private string appStoreLink = "http://www.YOUROWNAPPLINK.com";
-
     public static bool isCollectionOpen = false;
     public static int stage {
         get { 
@@ -225,12 +222,5 @@ public class GameManager : MonoBehaviour
         GameObject.FindGameObjectWithTag("AdManager").GetComponent<GoogleMobileAdsObject>().ShowRewardedAdForMeowney();
     }
 
-    public void TwitterShare()
-    {
-        string descriptionParam = "YOUR AWESOME GAME MESSAGE!";
-        Application.OpenURL(TWITTER_ADDRESS +
-           "?text=" + WWW.EscapeURL(descriptionParam + "\n" + "Get the Game:\n" + appStoreLink));
-
-    }
 
 }

@@ -18,6 +18,7 @@ public class CatSelector : MonoBehaviour
 
     public static int rescuedCatNumber;
     public static string rescuedCatCategory;
+
     void OnEnable()
     {
         GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Cats/"+ DataManager.Instance.equipCategory +"/" + DataManager.Instance.equipNumber.ToString());
