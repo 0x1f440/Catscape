@@ -15,7 +15,7 @@ public class LevelRepository : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        levels = Resources.Load<TextAsset>("levels").text.TrimEnd(',').Split(',');
+        levels = Resources.Load<TextAsset>("levels").text.TrimEnd().TrimEnd(',').Split(',');
     }
 
     public string[] GetLevels()

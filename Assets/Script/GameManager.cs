@@ -175,10 +175,7 @@ public class GameManager : MonoBehaviour
         GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().LoadLevel(stage % LevelRepository.numberOfLevels);
         isRestart = false;
     }
-    public void PurchaseACat()
-    {
-        
-    }
+
     internal void CheckIfCanUnlockAdCat()
     {
         if (DataManager.Instance.seenAd == 1)
