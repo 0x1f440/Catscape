@@ -10,4 +10,5 @@ public class CatData
     public string description;
     public string unlockCondition;
     public string catType;
+    public int price;
 }

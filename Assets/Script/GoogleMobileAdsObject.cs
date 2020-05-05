@@ -77,7 +77,10 @@ public class GoogleMobileAdsObject : MonoBehaviour
 
 	public void HandleUserEarnedReward(object sender, EventArgs args)
 	{
-		GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().GetRewardMeowney();
+		DataManager.Instance.seenAd += 1;
+		GameManager gm = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>();
+		gm.CheckIfCanUnlockAdCat();
+		gm.GetRewardMeowney();
 	}
 
 }

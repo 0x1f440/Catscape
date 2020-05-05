@@ -17,16 +17,20 @@ public class EquipCatManager : MonoBehaviour
         }
         else
         {
-            transform.GetChild(0).GetComponent<Text>().text = "장착하기";
-            
-            if(CollectionDetailPage.isRescued)
-                GetComponent<Image>().color = active;
-            else
-                GetComponent<Image>().color = inactive;
-
+            BeEqippable();
         }
     }
-    
+   
+    public void BeEqippable()
+    {
+        transform.GetChild(0).GetComponent<Text>().text = "장착하기";
+
+        if (CollectionDetailPage.isRescued)
+            GetComponent<Image>().color = active;
+        else
+            GetComponent<Image>().color = inactive;
+
+    }
     public void Equip()
     {
         if (CollectionDetailPage.isEquipped || !CollectionDetailPage.isRescued)

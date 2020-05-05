@@ -7,8 +7,9 @@ public class CollectionDetailPage : MonoBehaviour
 {
     public static int selectedCatNumber;
     public static string selectedCatCategory;
+    public static CatData catData;
 
-    GameObject detailPage;
+    GameObject detailPage, equipButton;
     Text catNameUI;
     Text catDescriptionUI;
     Image catImgUI;
@@ -16,7 +17,6 @@ public class CollectionDetailPage : MonoBehaviour
 
     public static bool isLocked;
     public static bool isRescued;
-
     public static bool isEquipped;
     
     // Start is called before the first frame update
@@ -26,49 +26,43 @@ public class CollectionDetailPage : MonoBehaviour
         catNameUI = detailPage.transform.Find("Name").GetComponent<Text>();
         catDescriptionUI = detailPage.transform.Find("Desc").GetComponent<Text>();
         catImgUI = detailPage.transform.Find("Picture").GetComponent<Image>();
+        equipButton = detailPage.transform.Find("Equip").gameObject;
     }
-    public void OpenDetailPage(string catName, string catDesc, Sprite catImg, bool isEquipedBool)
-    {
-        if (catNameUI == null)
-            FetchVariables();
-
-        isEquipped = isEquipedBool;
-
-        catNameUI.text = catName;
-        catDescriptionUI.text = catDesc;
-        catImgUI.sprite = catImg;
-        catImgUI.color = new Color(1, 1, 1);
-        gameObject.SetActive(true);
-    }
-
     public void OpenDetailPage(Sprite catImg)
     {
         if (catNameUI == null)
             FetchVariables();
 
-        isEquipped = false;
-
-        catNameUI.text = "???";
+        isEquipped = DataManager.Instance.equipCategory == selectedCatCategory && DataManager.Instance.equipNumber == selectedCatNumber;
         catImgUI.sprite = catImg;
-        catImgUI.color = new Color(0, 0, 0);
+        if (isRescued)
+        {
+            catNameUI.text = catData.name;
+            catImgUI.color = new Color(1, 1, 1);
+            equipButton.SetActive(true);
 
-        catDescriptionUI.text = "???";
+        }
+        else
+        {
+            catNameUI.text = "???";
+            catImgUI.color = new Color(0,0,0);
+            equipButton.SetActive(false);
+        }
 
-
-        gameObject.SetActive(true);
-    }
-    public void OpenDetailPage(string catUnlockCondition, Sprite catImg)
-    {
-        if (catNameUI == null)
-            FetchVariables();
-
-        isEquipped = false;
-
-        catNameUI.text = "???";
-        catImgUI.sprite = catImg;
-        catImgUI.color = new Color(0, 0, 0);
+        transform.Find("Purchase").gameObject.SetActive(false);
         
-        catDescriptionUI.text = catUnlockCondition;       
+        if (isLocked)
+        {
+            catDescriptionUI.text = catData.unlockCondition;
+            if (catData.catType == "purchase")
+            {
+                transform.Find("Purchase").gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            catDescriptionUI.text = catData.description;
+        }
 
         gameObject.SetActive(true);
     }

@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System.Text;
 using System;
+using System.Globalization;
 
 [Serializable]
 public class DataManager
@@ -38,6 +39,8 @@ public class DataManager
 
     public string equipCategory;
     public int equipNumber;
+
+    public int seenAd;
     
 
     private void Create()
@@ -49,11 +52,13 @@ public class DataManager
         instance.rescuedRareCats = new List<int> { };
         instance.rescuedSpecialCats = new List<int> { };
 
-        instance.unlockedRareCats = new List<int> { 0, 2, 6 };
+        instance.unlockedRareCats = new List<int> { 0, 2, 6, 11 };
         instance.unlockedSpecialCats = new List<int> { 3 };
 
         instance.equipCategory = "Common";
         instance.equipNumber = 0;
+
+        instance.seenAd = 0;
     }
 
     public static void Save()

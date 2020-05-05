@@ -7,10 +7,8 @@ public class CollectionInfoContainer : MonoBehaviour
     public string catCategory;
     public int catNumber;
 
-    public string catName;
-    public string catDesc;
+    public CatData catData;
     public Sprite catImg;
-    public string catUnlockCondition;
 
     public bool hasCat;
     public bool isLocked;
@@ -21,24 +19,17 @@ public class CollectionInfoContainer : MonoBehaviour
     {
         if (hasCat)
         {
-            bool isEquiped = DataManager.Instance.equipCategory == catCategory && DataManager.Instance.equipNumber == catNumber;
             CollectionDetailPage.isRescued = true;
-            CollectionDetailPage.selectedCatCategory = catCategory;
-            CollectionDetailPage.selectedCatNumber = catNumber;
-            
-            DetailPage.GetComponent<CollectionDetailPage>().OpenDetailPage(catName, catDesc, catImg, isEquiped);
         }
         else
         {
             CollectionDetailPage.isRescued = false;
-            if (isLocked)
-            {
-                DetailPage.GetComponent<CollectionDetailPage>().OpenDetailPage(catUnlockCondition, catImg);
-            }
-            else
-            {
-                DetailPage.GetComponent<CollectionDetailPage>().OpenDetailPage(catImg);
-            }
         }
+        
+        CollectionDetailPage.selectedCatCategory = catCategory;
+        CollectionDetailPage.selectedCatNumber = catNumber;
+        CollectionDetailPage.catData = catData;
+        CollectionDetailPage.isLocked = isLocked;
+        DetailPage.GetComponent<CollectionDetailPage>().OpenDetailPage(catImg);
     }
 }

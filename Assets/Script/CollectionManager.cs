@@ -13,6 +13,13 @@ public class CollectionManager : MonoBehaviour
     public GameObject prevBtn, nextBtn, completeUI, indexUI, slot, percentUI;
 
     public Sprite lockDefault, lockPurchase;
+
+    CollectionInfoContainer infoSlot;
+    Image catImg;
+    Text catName;
+    GameObject lockImg;
+    CatData catData;
+    TextAsset jsonData;
     void OnEnable()
     {
         GameManager.isCollectionOpen = true;
@@ -53,28 +60,29 @@ public class CollectionManager : MonoBehaviour
 
         while (count < CATS_PER_PAGE)
         {
-            var info = slot.transform.GetChild(count).GetComponent<CollectionInfoContainer>();
-            var catImg = slot.transform.GetChild(count).Find("ColCatImg").GetComponent<Image>();
-            var catName = slot.transform.GetChild(count).Find("Name").GetComponent<Text>();
-            var lockImg = slot.transform.GetChild(count).Find("LockImage").gameObject;
+            infoSlot = slot.transform.GetChild(count).GetComponent<CollectionInfoContainer>();
+            catImg = slot.transform.GetChild(count).Find("ColCatImg").GetComponent<Image>();
+            catName = slot.transform.GetChild(count).Find("Name").GetComponent<Text>();
+            lockImg = slot.transform.GetChild(count).Find("LockImage").gameObject;
 
             int catNumber = index * CATS_PER_PAGE + count;
 
-            TextAsset jsonData = null;
-            CatData catData = null;
+            jsonData = null;
+            catData = null;
 
             catImg.color = new Color(1, 1, 1);
             lockImg.SetActive(false);
 
-            info.hasCat = true;
-            info.isLocked = false;
+            infoSlot.hasCat = true;
+            infoSlot.isLocked = false;
+
             if (catNumber < CatSelector.normalCount)
             {
-                info.catNumber = catNumber;
-                info.catCategory = "Common";
-                
+                infoSlot.catNumber = catNumber;
+                infoSlot.catCategory = "Common";
                 catImg.sprite = Resources.Load<Sprite>("Cats/Common/" + catNumber.ToString());
-                if (DataManager.Instance.rescuedCommonCats.Contains(catNumber))
+                
+                if (CheckIfHasCat("Common", catNumber))
                 {
                     jsonData = Resources.Load<TextAsset>("Cats/Common/" + catNumber.ToString());
                     catData = JsonUtility.FromJson<CatData>(jsonData.text);
@@ -82,29 +90,30 @@ public class CollectionManager : MonoBehaviour
                 }
                 else
                 {
-                    info.hasCat = false;
+                    infoSlot.hasCat = false;
                     catImg.color = new Color(0, 0, 0);
                     catName.text = "???";
                 }
             }
             else if (catNumber < CatSelector.normalCount + CatSelector.rareCount)
             {
-                info.catNumber = catNumber;
-                info.catCategory = "Rare";
 
                 catNumber -= CatSelector.normalCount;
                 catImg.sprite = Resources.Load<Sprite>("Cats/Rare/" + catNumber.ToString());
 
+                infoSlot.catNumber = catNumber;
+                infoSlot.catCategory = "Rare";
+
                 jsonData = Resources.Load<TextAsset>("Cats/Rare/" + catNumber.ToString());
                 catData = JsonUtility.FromJson<CatData>(jsonData.text);
 
-                if (DataManager.Instance.rescuedRareCats.Contains(catNumber))
+                if (CheckIfHasCat("Rare", catNumber))
                 {
                     catName.text = catData.name;
                 }
                 else
                 {
-                    info.hasCat = false;
+                    infoSlot.hasCat = false;
                     catImg.color = new Color(0, 0, 0);
                     if (DataManager.Instance.unlockedRareCats.Contains(catNumber))
                     {
@@ -112,38 +121,28 @@ public class CollectionManager : MonoBehaviour
                     }
                     else
                     {
-                        info.isLocked = true;
-                        catName.text = catData.unlockCondition;
-                        if (catData.catType == "purchase")
-                        {
-                            lockImg.GetComponent<Image>().sprite = lockPurchase;
-                        }
-                        else
-                        {
-                            lockImg.GetComponent<Image>().sprite = lockDefault;
-                        }
-                        lockImg.SetActive(true);
+                        SetLockedCatSlot();    
                     }
                 }
             }
             else if (catNumber < CatSelector.normalCount + CatSelector.rareCount + CatSelector.specialCount)
             {
-                info.catNumber = catNumber;
-                info.catCategory = "Special";
-
                 catNumber -= CatSelector.normalCount + CatSelector.rareCount;
                 catImg.sprite = Resources.Load<Sprite>("Cats/Special/" + catNumber.ToString());
+
+                infoSlot.catNumber = catNumber;
+                infoSlot.catCategory = "Special";
 
                 jsonData = Resources.Load<TextAsset>("Cats/Special/" + catNumber.ToString());
                 catData = JsonUtility.FromJson<CatData>(jsonData.text);
                 
-                if (DataManager.Instance.rescuedSpecialCats.Contains(catNumber))
+                if (CheckIfHasCat("Special", catNumber))
                 {
                     catName.text = catData.name;
                 }
                 else
                 {
-                    info.hasCat = false;
+                    infoSlot.hasCat = false;
                     catImg.color = new Color(0, 0, 0);
                     if (DataManager.Instance.unlockedSpecialCats.Contains(catNumber))
                     {
@@ -151,43 +150,59 @@ public class CollectionManager : MonoBehaviour
                     }
                     else
                     {
-                        info.isLocked = true;
-                        catName.text = catData.unlockCondition;
-                        if (catData.catType == "purchase")
-                        {
-                            lockImg.GetComponent<Image>().sprite = lockPurchase;
-                        }
-                        else
-                        {
-                            lockImg.GetComponent<Image>().sprite = lockDefault;
-                        }
-                        lockImg.SetActive(true);
+                        SetLockedCatSlot();
                     }
                 }
             }
             else
             {
-                info.hasCat = false;
-                catImg.sprite = null;
-                catName.text = "";
+                SetEmptySlot();
             }
 
-            info.catName = catName.text;
-            info.catImg = catImg.sprite;
-
-            if (catData != null)
-            {
-                info.catDesc = catData.description;
-                info.catUnlockCondition = catData.unlockCondition;
-            }
-            else
-            {
-                info.catDesc = "";
-                info.catUnlockCondition = "";
-            }
+            infoSlot.catImg = catImg.sprite;
+            infoSlot.catData = catData;
   
             count++;
         }
+    }
+
+    bool CheckIfHasCat(string category, int number)
+    {
+        switch (category)
+        {
+            case "Common":
+                return DataManager.Instance.rescuedCommonCats.Contains(number);
+
+            case "Rare":
+                return DataManager.Instance.rescuedRareCats.Contains(number);
+
+            case "Special":
+                return DataManager.Instance.rescuedSpecialCats.Contains(number);
+        }
+
+        return false;
+    }
+
+    void SetEmptySlot()
+    {
+        infoSlot.hasCat = false;
+        catImg.sprite = null;
+        catName.text = "";
+    }
+    void SetLockedCatSlot()
+    {
+        infoSlot.isLocked = true;
+        catName.text = catData.unlockCondition;
+
+        if (catData.catType == "purchase")
+        {
+            lockImg.GetComponent<Image>().sprite = lockPurchase;
+        }
+        else
+        {
+            lockImg.GetComponent<Image>().sprite = lockDefault;
+        }
+        lockImg.SetActive(true);
     }
 
     void UpdateIndexUI()

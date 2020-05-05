@@ -81,8 +81,11 @@ public class GameManager : MonoBehaviour
         GetMeowney();
     }
 
-    private void GetACat(string category, int number)
+    public void GetACat(string category, int number)
     {
+        Debug.Log(category);
+        Debug.Log(number);
+
         switch (category)
         {
             case "Common":
@@ -107,18 +110,19 @@ public class GameManager : MonoBehaviour
                 break;
 
             case "Special":
-                if (!DataManager.Instance.rescuedSpecialCats.Contains(CatSelector.rescuedCatNumber))
+                if (!DataManager.Instance.rescuedSpecialCats.Contains(number))
                 {
                     CatPictureManager.showRibbon = true;
-                    DataManager.Instance.rescuedSpecialCats.Add(CatSelector.rescuedCatNumber);
+                    DataManager.Instance.rescuedSpecialCats.Add(number);
                 }
 
-                if (!DataManager.Instance.unlockedSpecialCats.Contains(CatSelector.rescuedCatNumber))
+                if (!DataManager.Instance.unlockedSpecialCats.Contains(number))
                 {
-                    DataManager.Instance.unlockedSpecialCats.Add(CatSelector.rescuedCatNumber);
+                    DataManager.Instance.unlockedSpecialCats.Add(number);
                 }
                 break;
         }
+        DataManager.Save();
     }
 
     internal void GetRewardMeowney()
@@ -146,6 +150,12 @@ public class GameManager : MonoBehaviour
         addMeowneyUI.text = "+" + meowney.ToString();
     }
 
+    public void LoseMeowney(int meowney)
+    {
+        DataManager.Instance.meowney -= meowney;
+        UpdateUI();
+    }
+
     private void UpdateUI()
     {
         stageUI.text = (stage + 1).ToString();
@@ -162,14 +172,32 @@ public class GameManager : MonoBehaviour
     }
     public void StartGame()
     {
-        CheckUnlock();
+        CheckIfCanGetStageUnlockCat();
         move = 0;
         UpdateUI();
         GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().LoadLevel(stage % LevelRepository.numberOfLevels);
         isRestart = false;
     }
-
-    private void CheckUnlock()
+    public void PurchaseACat()
+    {
+        
+    }
+    internal void CheckIfCanUnlockAdCat()
+    {
+        if (DataManager.Instance.seenAd == 1)
+        {
+            GetACat("Rare", 9);
+        }
+        if (DataManager.Instance.seenAd == 5)
+        {
+            GetACat("Rare", 1);
+        }
+        if (DataManager.Instance.seenAd == 10)
+        {
+            GetACat("Rare", 12);
+        }
+    }
+    private void CheckIfCanGetStageUnlockCat()
     {
         if(stage == 30 - 1)
         {
