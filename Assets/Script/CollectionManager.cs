@@ -12,6 +12,7 @@ public class CollectionManager : MonoBehaviour
     static int maxIndex = (int)Mathf.Ceil(CatSelector.CatCount / CATS_PER_PAGE)+1;
     public GameObject prevBtn, nextBtn, completeUI, indexUI, slot, percentUI;
 
+    public Sprite lockDefault, lockPurchase;
     void OnEnable()
     {
         GameManager.isCollectionOpen = true;
@@ -113,6 +114,14 @@ public class CollectionManager : MonoBehaviour
                     {
                         info.isLocked = true;
                         catName.text = catData.unlockCondition;
+                        if (catData.catType == "purchase")
+                        {
+                            lockImg.GetComponent<Image>().sprite = lockPurchase;
+                        }
+                        else
+                        {
+                            lockImg.GetComponent<Image>().sprite = lockDefault;
+                        }
                         lockImg.SetActive(true);
                     }
                 }
@@ -144,6 +153,14 @@ public class CollectionManager : MonoBehaviour
                     {
                         info.isLocked = true;
                         catName.text = catData.unlockCondition;
+                        if (catData.catType == "purchase")
+                        {
+                            lockImg.GetComponent<Image>().sprite = lockPurchase;
+                        }
+                        else
+                        {
+                            lockImg.GetComponent<Image>().sprite = lockDefault;
+                        }
                         lockImg.SetActive(true);
                     }
                 }

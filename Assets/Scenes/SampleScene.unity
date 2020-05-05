@@ -12855,6 +12855,8 @@ MonoBehaviour:
   indexUI: {fileID: 1750503748}
   slot: {fileID: 2105154987}
   percentUI: {fileID: 1270105725}
+  lockDefault: {fileID: 21300000, guid: 17271d6a833da4140a7badf9da1429f2, type: 3}
+  lockPurchase: {fileID: 21300000, guid: 42bf6f9b9690e3341b131a83acd08b40, type: 3}
 --- !u!1 &1488060099
 GameObject:
   m_ObjectHideFlags: 0
