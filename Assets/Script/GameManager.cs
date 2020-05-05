@@ -71,42 +71,7 @@ public class GameManager : MonoBehaviour
         if (CatSelector.isRandom)
         {
             CatSelector.GetRandomCat();
-            switch (CatSelector.rescuedCatCategory)
-            {
-                case "Common":
-                    if (!DataManager.Instance.rescuedCommonCats.Contains(CatSelector.rescuedCatNumber))
-                    {
-                        CatPictureManager.showRibbon = true;
-                        DataManager.Instance.rescuedCommonCats.Add(CatSelector.rescuedCatNumber);
-                    }
-                    break;
-
-                case "Rare":
-                    if (!DataManager.Instance.rescuedRareCats.Contains(CatSelector.rescuedCatNumber))
-                    {
-                        CatPictureManager.showRibbon = true;
-                        DataManager.Instance.rescuedRareCats.Add(CatSelector.rescuedCatNumber);
-                    }
-
-                    if (!DataManager.Instance.unlockedRareCats.Contains(CatSelector.rescuedCatNumber))
-                    {
-                        DataManager.Instance.unlockedRareCats.Add(CatSelector.rescuedCatNumber);
-                    }
-                    break;
-
-                case "Special":
-                    if (!DataManager.Instance.rescuedSpecialCats.Contains(CatSelector.rescuedCatNumber))
-                    {
-                        CatPictureManager.showRibbon = true;
-                        DataManager.Instance.rescuedSpecialCats.Add(CatSelector.rescuedCatNumber);
-                    }
-
-                    if (!DataManager.Instance.unlockedSpecialCats.Contains(CatSelector.rescuedCatNumber))
-                    {
-                        DataManager.Instance.unlockedSpecialCats.Add(CatSelector.rescuedCatNumber);
-                    }
-                    break;
-            }
+            GetACat(CatSelector.rescuedCatCategory, CatSelector.rescuedCatNumber);
             DataManager.Save();
         }
         
@@ -114,6 +79,46 @@ public class GameManager : MonoBehaviour
         clearScene.SetActive(true);
         GameEndEventHandler();
         GetMeowney();
+    }
+
+    private void GetACat(string category, int number)
+    {
+        switch (category)
+        {
+            case "Common":
+                if (!DataManager.Instance.rescuedCommonCats.Contains(number))
+                {
+                    CatPictureManager.showRibbon = true;
+                    DataManager.Instance.rescuedCommonCats.Add(number);
+                }
+                break;
+
+            case "Rare":
+                if (!DataManager.Instance.rescuedRareCats.Contains(number))
+                {
+                    CatPictureManager.showRibbon = true;
+                    DataManager.Instance.rescuedRareCats.Add(number);
+                }
+
+                if (!DataManager.Instance.unlockedRareCats.Contains(number))
+                {
+                    DataManager.Instance.unlockedRareCats.Add(number);
+                }
+                break;
+
+            case "Special":
+                if (!DataManager.Instance.rescuedSpecialCats.Contains(CatSelector.rescuedCatNumber))
+                {
+                    CatPictureManager.showRibbon = true;
+                    DataManager.Instance.rescuedSpecialCats.Add(CatSelector.rescuedCatNumber);
+                }
+
+                if (!DataManager.Instance.unlockedSpecialCats.Contains(CatSelector.rescuedCatNumber))
+                {
+                    DataManager.Instance.unlockedSpecialCats.Add(CatSelector.rescuedCatNumber);
+                }
+                break;
+        }
     }
 
     internal void GetRewardMeowney()
@@ -157,10 +162,27 @@ public class GameManager : MonoBehaviour
     }
     public void StartGame()
     {
+        CheckUnlock();
         move = 0;
         UpdateUI();
         GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelManager>().LoadLevel(stage % LevelRepository.numberOfLevels);
         isRestart = false;
+    }
+
+    private void CheckUnlock()
+    {
+        if(stage == 30 - 1)
+        {
+            GetACat("Rare", 4);
+        }
+        if (stage == 50 - 1)
+        {
+            GetACat("Rare", 5);
+        }
+        if (stage == 100 - 1)
+        {
+            GetACat("Special", 0);
+        }
     }
 
     public void SkipStage()
