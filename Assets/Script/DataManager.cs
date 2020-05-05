@@ -49,8 +49,8 @@ public class DataManager
         instance.rescuedRareCats = new List<int> { };
         instance.rescuedSpecialCats = new List<int> { };
 
-        instance.unlockedRareCats = new List<int> { };
-        instance.unlockedSpecialCats = new List<int> { };
+        instance.unlockedRareCats = new List<int> { 0, 2, 6 };
+        instance.unlockedSpecialCats = new List<int> { 3 };
 
         instance.equipCategory = "Common";
         instance.equipNumber = 0;
