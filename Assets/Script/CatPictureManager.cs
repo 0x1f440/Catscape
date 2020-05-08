@@ -11,24 +11,23 @@ public class CatPictureManager : MonoBehaviour
     {
         CheckRibbon();
 
+        string path;
+
         if (CatSelector.isRandom)
         {
-            string path = "Cats/" + CatSelector.rescuedCatCategory + "/" + CatSelector.rescuedCatNumber.ToString();
-            var jsonData = Resources.Load<TextAsset>(path);
-            var catData = JsonUtility.FromJson<CatData>(jsonData.text);
-
-            transform.Find("Photo/Cat").GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
-            transform.Find("Text").GetComponent<Text>().text = catData.name;
+            path = "Cats/" + CatSelector.rescuedCatCategory + "/" + CatSelector.rescuedCatNumber.ToString();
         }
         else
         {
-            string path = "Cats/" + DataManager.Instance.equipCategory + "/" + DataManager.Instance.equipNumber.ToString();
-            var jsonData = Resources.Load<TextAsset>(path);
-            var catData = JsonUtility.FromJson<CatData>(jsonData.text);
-
-            transform.Find("Photo/Cat").GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
-            transform.Find("Text").GetComponent<Text>().text = catData.name;
+            path = "Cats/" + DataManager.Instance.equipCategory + "/" + DataManager.Instance.equipNumber.ToString();
         }
+
+        var jsonData = Resources.Load<TextAsset>(path);
+        var catData = JsonUtility.FromJson<CatData>(jsonData.text);
+
+        transform.Find("Photo/Cat").GetComponent<Image>().sprite = Resources.Load<Sprite>(path);
+        transform.Find("Text").GetComponent<Text>().text = catData.name;
+        transform.Find("SpeechBubble/Desc").GetComponent<Text>().text = catData.description;
     }
 
     private void CheckRibbon()
