@@ -43,6 +43,8 @@ public class EquipCatManager : MonoBehaviour
             DataManager.Instance.equipCategory = CollectionDetailPage.selectedCatCategory;
             DataManager.Instance.equipNumber = CollectionDetailPage.selectedCatNumber;
             CollectionDetailPage.isEquipped = true;
+            CatSelector.rescuedCatCategory = CollectionDetailPage.selectedCatCategory;
+            CatSelector.rescuedCatNumber = CollectionDetailPage.selectedCatNumber;
             GameObject.FindGameObjectWithTag("Target").GetComponent<SpriteRenderer>().sprite = catImg.sprite;
             OnEnable();
         }

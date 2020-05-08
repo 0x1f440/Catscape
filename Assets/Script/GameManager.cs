@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
             GetACat(CatSelector.rescuedCatCategory, CatSelector.rescuedCatNumber);
             DataManager.Save();
         }
-        
+
         clearScene.transform.Find("panel/AdForMeowney").gameObject.SetActive(true);
         clearScene.SetActive(true);
         GameEndEventHandler();
