@@ -38,7 +38,7 @@ public class ShareScreenshot : MonoBehaviour
 
         string ShareSubject = "Picture Share";
         string textToShare = "공원에서 길을 잃은 고양이를 구했어요! " +
-            "<"+ catData.name +" : " + catData.description + ">\n";
+            "<"+ catData.name +" : " + catData.description + "> #캣스케이프\n";
         string shareLink = "storelink";
 
         Debug.Log(destination);
