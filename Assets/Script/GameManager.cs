@@ -182,6 +182,10 @@ public class GameManager : MonoBehaviour
         {
             GetACat("Rare", 9);
         }
+        if (DataManager.Instance.seenAd == 3)// 계란초밥냥
+        {
+            GetACat("Rare", 22);
+        }
         if (DataManager.Instance.seenAd == 5)
         {
             GetACat("Rare", 1);
@@ -190,18 +194,38 @@ public class GameManager : MonoBehaviour
         {
             GetACat("Rare", 12);
         }
+        if (DataManager.Instance.seenAd == 20) // 미믹냥
+        {
+            GetACat("Special", 9);
+        }
     }
     private void CheckIfCanGetStageUnlockCat()
     {
-        if(stage == 30 - 1)
+        if(stage == 30 - 1) // 크로마
         {
             GetACat("Rare", 4);
         }
-        if (stage == 50 - 1)
+        else if (stage == 40 - 1) // 알파
         {
             GetACat("Rare", 5);
         }
-        if (stage == 100 - 1)
+        else if (stage == 50 - 1) // 세일러냥
+        {
+            GetACat("Rare", 18);
+        }
+        else if (stage == 70 - 1) // 산타냥
+        {
+            GetACat("Rare", 19);
+        }
+        else if (stage == 100 - 1) // 새우초밥냥
+        {
+            GetACat("Rare", 21);
+        }
+        else if (stage == 200 - 1) // 유니콘냥
+        {
+            GetACat("Rare", 29);
+        }
+        else if (stage == 300 - 1) // 호랑이
         {
             GetACat("Special", 0);
         }

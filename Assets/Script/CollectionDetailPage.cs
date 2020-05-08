@@ -50,19 +50,12 @@ public class CollectionDetailPage : MonoBehaviour
         }
 
         transform.Find("Purchase").gameObject.SetActive(false);
+        catDescriptionUI.text = catData.description;
         
-        if (isLocked)
+        if (isLocked && catData.catType == "purchase")
         {
-            catDescriptionUI.text = catData.unlockCondition;
-            if (catData.catType == "purchase")
-            {
-                transform.Find("Purchase").gameObject.SetActive(true);
-            }
-        }
-        else
-        {
-            catDescriptionUI.text = catData.description;
-        }
+            transform.Find("Purchase").gameObject.SetActive(true);
+        }   
 
         gameObject.SetActive(true);
     }

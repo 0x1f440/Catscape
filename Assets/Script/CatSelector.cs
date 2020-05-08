@@ -11,9 +11,9 @@ public class CatSelector : MonoBehaviour
         } 
     }
 
-    public static int normalCount = 28;
-    public static int rareCount = 13;
-    public static int specialCount = 4;
+    public static int normalCount = 31;
+    public static int rareCount = 32;
+    public static int specialCount = 10;
     public static int CatCount { get { return normalCount + rareCount + specialCount; } }
 
     public static int rescuedCatNumber;
