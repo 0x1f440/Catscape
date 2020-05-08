@@ -33,11 +33,11 @@ public class CatSelector : MonoBehaviour
         }
 
         int dice = Random.Range(0, 100);
-        if (dice < 50)
+        if (dice < 90)
         {
             LoadCommonCat();
         }
-        else if (dice < 80)
+        else if (dice < 97)
         {
             LoadRareCat();
         }
@@ -50,18 +50,20 @@ public class CatSelector : MonoBehaviour
     static void LoadCommonCat()
     {
         rescuedCatCategory = "Common";
-        rescuedCatNumber = Random.Range(0, normalCount);
+        rescuedCatNumber = Random.Range(1, normalCount);
     }
 
     static void LoadRareCat()
     {
         rescuedCatCategory = "Rare";
-        rescuedCatNumber = Random.Range(0, rareCount);
+        int random = Random.Range(0, DataManager.Instance.unlockedRareCats.Count);
+        rescuedCatNumber = DataManager.Instance.unlockedRareCats[random];
     }
 
     static void LoadSpecialCat()
     {
         rescuedCatCategory = "Special";
-        rescuedCatNumber = Random.Range(0, specialCount);
+        int random = Random.Range(0, DataManager.Instance.unlockedSpecialCats.Count);
+        rescuedCatNumber = DataManager.Instance.unlockedSpecialCats[random];
     }
 }
