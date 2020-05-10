@@ -171,6 +171,10 @@ public class GameManager : MonoBehaviour
         clearScene.SetActive(false);
         stage++;
         UpdateUI();
+
+        if(stage+1 % 10 == 0)
+            GameObject.FindGameObjectWithTag("AdManager").GetComponent<GoogleMobileAdsObject>().ShowInterstitial();
+        
         StartGame();
     }
     public void StartGame()
