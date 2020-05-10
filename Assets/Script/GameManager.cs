@@ -142,11 +142,11 @@ public class GameManager : MonoBehaviour
     }
     private void GetMeowney()
     {
-        int meowney = (stage / 20) + 1;
+        int meowney = (stage / 10) + 1;
 
-        if(meowney >= 5)
+        if(meowney >= 10)
         {
-            meowney = 5;
+            meowney = 10;
         }
 
         DataManager.Instance.meowney += meowney;
